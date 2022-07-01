@@ -27,6 +27,11 @@
             <td>{{ item.time | formatDate }}</td>
             <td><a href="#" @click.prevent="delFn(item.id)">删除</a></td>
           </tr>
+          <tr style="background-color: #eee">
+            <td>统计:</td>
+            <td colspan="2">总价钱为: {{ allPrice }}</td>
+            <td colspan="2">平均价: {{ svgPrice }}</td>
+          </tr>
         </tbody>
       </table>
 
@@ -102,6 +107,14 @@ export default {
   filters: {
     formatDate(val) {
       return moment(val).format('YYYY-MM-DD')
+    },
+  },
+  computed: {
+    allPrice() {
+      return this.list.reduce((a, b) => a + b.price, 0)
+    },
+    svgPrice() {
+      return (this.allPrice / (this.list.length - 1)).toFixed(2)
     },
   },
 }
