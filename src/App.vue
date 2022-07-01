@@ -71,7 +71,8 @@ import moment from 'moment'
 export default {
   data() {
     return {
-      list: [
+      // 1.4 读取本地缓存，如果没有就导入默认设置数据
+      list: JSON.parse(localStorage.getItem('list')) || [
         { id: 100, name: '外套', price: 199, time: new Date('2010-08-12') },
         { id: 101, name: '裤子', price: 34, time: new Date('2013-09-01') },
         { id: 102, name: '鞋', price: 25.4, time: new Date('2018-11-22') },
@@ -111,10 +112,25 @@ export default {
   },
   computed: {
     allPrice() {
-      return this.list.reduce((a, b) => a + b.price, 0)
+      // 运算时候前面加个+号会默认转换成数值
+      return this.list.reduce((a, b) => a + +b.price, 0)
     },
     svgPrice() {
       return (this.allPrice / (this.list.length - 1)).toFixed(2)
+    },
+  },
+  // 1.0监听事件
+  watch: {
+    //1.1 对数组进行监听
+    list: {
+      handler() {
+        //1.2 保存到本地
+        localStorage.setItem('list', JSON.stringify(this.list))
+      },
+      //1.3  进行深度监听
+      deep: true,
+      //1.5 将缓存存入本地
+      immediate: true,
     },
   },
 }
