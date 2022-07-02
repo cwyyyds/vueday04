@@ -16,6 +16,7 @@ export default {
     },
   },
 }
+//vue实例上定义了一遍methods里所有的方法，并且使用bind函数将函数的this指向Vue实例上
 // 3.this指向
 function fn() {
   // 3.html 的时候指向window,vue调用的undefined
